@@ -34,9 +34,10 @@ void O2ReplyServer::onBytesReady() {
     if (!socket) {
         return;
     }
+
     QByteArray reply;
     QByteArray content;
-    content.append("<HTML></HTML>");
+    content.append("<HTML><body>You can close this window.<script>var href = document.location.href; if (href.indexOf('#') != -1) { href = href.replace('#', ''); document.location.href = href; };</script></body></HTML>");
     reply.append("HTTP/1.0 200 OK \r\n");
     reply.append("Content-Type: text/html; charset=\"utf-8\"\r\n");
     reply.append(QString("Content-Length: %1\r\n\r\n").arg(content.size()));

@@ -23,12 +23,37 @@ O2Facebook::O2Facebook(QObject *parent): O2(parent) {
 
 void O2Facebook::onVerificationReceived(const QMap<QString, QString> response) {
     emit closeBrowser();
+
     if (response.contains("error")) {
         qWarning() << "O2Facebook::onVerificationReceived: Verification failed";
         foreach (QString key, response.keys()) {
             qWarning() << "O2Facebook::onVerificationReceived:" << key << response.value(key);
         }
         emit linkingFailed();
+        return;
+    }
+
+    if (grantFlow_ != GrantFlowAuthorizationCode)
+    {
+        if (response.count() == 1)
+        {
+        }
+        else if (response.count() == 2)
+        {
+            qWarning() << "O2Facebook::onVerificationReceived: GrantFlowImplicit hack";
+
+            setToken(response.value(O2_OAUTH2_ACCESS_TOKEN, ""));
+            setExpires(response.value(FB_EXPIRES_KEY, "0").toInt());
+
+            emit linkedChanged();
+            emit tokenChanged();
+            emit linkingSucceeded();
+        }
+        else
+        {
+            emit linkingFailed();
+        }
+
         return;
     }
 
