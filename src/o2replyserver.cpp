@@ -45,7 +45,21 @@ void O2ReplyServer::onBytesReady() {
     socket->write(reply);
 
     QByteArray data = socket->readAll();
+
+    // skip favicon.ico
+    if (data.contains("favicon.ico"))
+    {
+        return;
+    }
+
     QMap<QString, QString> queryParams = parseQueryParams(&data);
+
+    // facebook hack
+    if (queryParams.count() == 1 && queryParams.value("") == QString(""))
+    {
+        return;
+    }
+
     socket->disconnectFromHost();
     close();
     emit verificationReceived(queryParams);

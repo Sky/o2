@@ -201,7 +201,10 @@ void O2::onVerificationReceived(const QMap<QString, QString> response) {
         QMap<QString, QString> parameters;
         parameters.insert(O2_OAUTH2_CODE, code());
         parameters.insert(O2_OAUTH2_CLIENT_ID, clientId_);
-        parameters.insert(O2_OAUTH2_CLIENT_SECRET, clientSecret_);
+        if (clientSecret_.length())
+        {
+            parameters.insert(O2_OAUTH2_CLIENT_SECRET, clientSecret_);
+        }
         parameters.insert(O2_OAUTH2_REDIRECT_URI, redirectUri_);
         parameters.insert(O2_OAUTH2_GRANT_TYPE, O2_AUTHORIZATION_CODE);
         QByteArray data = buildRequestBody(parameters);
