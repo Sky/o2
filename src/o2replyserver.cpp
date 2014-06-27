@@ -55,7 +55,7 @@ void O2ReplyServer::onBytesReady() {
     QMap<QString, QString> queryParams = parseQueryParams(&data);
 
     // facebook hack
-    if (queryParams.count() == 1 && queryParams.value("") == QString(""))
+    if (queryParams.count() == 1 && queryParams.value("", "fake") == QString(""))
     {
         return;
     }
