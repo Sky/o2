@@ -345,7 +345,10 @@ void O2::refresh() {
     refreshRequest.setHeader(QNetworkRequest::ContentTypeHeader, O2_MIME_TYPE_XFORM);
     QMap<QString, QString> parameters;
     parameters.insert(O2_OAUTH2_CLIENT_ID, clientId_);
-    parameters.insert(O2_OAUTH2_CLIENT_SECRET, clientSecret_);
+    if (clientSecret_.size())
+    {
+        parameters.insert(O2_OAUTH2_CLIENT_SECRET, clientSecret_);
+    }
     parameters.insert(O2_OAUTH2_REFRESH_TOKEN, refreshToken());
     parameters.insert(O2_OAUTH2_GRANT_TYPE, O2_OAUTH2_REFRESH_TOKEN);
     QByteArray data = buildRequestBody(parameters);
